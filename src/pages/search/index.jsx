@@ -52,7 +52,7 @@ export default function Search() {
             name="book-search"
             id="book-search"
             value={query}
-            onChange={e => { setPreviousQuery(query); setQuery(e.target.value)}}
+            onChange={ e => setQuery(e.target.value)}
             />
           <button type="submit">Submit</button>
         </div>
@@ -61,21 +61,24 @@ export default function Search() {
         // if loading, show the loading component
         // else if there are search results, render those
         // else show the NoResults component
+
         fetching
         ? <Loading />
         : bookSearchResults?.length
         ? <div className={styles.bookList}>
 
-            {/* TODO: render BookPreview components for each search result here based on bookSearchResults */} {
-            bookSearchResults.map((book) => (
+            {
+            /* TODO: render BookPreview components for each search result here based on bookSearchResults */} 
+            { bookSearchResults.map((book) => (
+              // let info = book.volumeInfo
                 <BookPreview 
                   title = {book.volumeInfo.title} 
                   authors = {book.volumeInfo.authors} 
                   previewLink = {book.volumeInfo.previewLink} 
-                  thumbnail = {book.volumeInfo.imageLinks?.thumbnail}/>
+                  thumbnail = {book.volumeInfo.imageLinks.thumbnail}/>
               ))}
-
           </div>
+        
         : <NoResults
           {...{inputRef, inputDivRef, previousQuery}}
           clearSearch={() => setQuery("")}/>
