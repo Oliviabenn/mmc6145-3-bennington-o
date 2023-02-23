@@ -19,17 +19,29 @@ export default function Search() {
   // fetch has not finished
   // the query is unchanged
 
+  async function getBooks(e) {
+    e.preventDefault()
+    setFetching(true)
+    const result = await fetch(`https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=${query}`)
+    const data = await result.json()
+    setBookSearchResults(data.items)
+    setFetching(false)
+  }
   const inputRef = useRef()
   const inputDivRef = useRef()
 
   return (
     <main className={styles.search}>
       <h1>Book Search</h1>
+
       {/* TODO: add an onSubmit handler */}
+
       <form className={styles.form}>
         <label htmlFor="book-search">Search by author, title, and/or keywords:</label>
         <div ref={inputDivRef}>
+
           {/* TODO: add value and onChange props to the input element based on query/setQuery */}
+
           <input
             ref={inputRef}
             type="text"
@@ -47,7 +59,9 @@ export default function Search() {
         ? <Loading />
         : bookSearchResults?.length
         ? <div className={styles.bookList}>
+
             {/* TODO: render BookPreview components for each search result here based on bookSearchResults */}
+
           </div>
         : <NoResults
           {...{inputRef, inputDivRef, previousQuery}}
