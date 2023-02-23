@@ -47,6 +47,7 @@ export default function Search() {
             type="text"
             name="book-search"
             id="book-search"
+            value={query}
             />
           <button type="submit">Submit</button>
         </div>
