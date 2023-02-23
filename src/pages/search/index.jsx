@@ -69,7 +69,7 @@ export default function Search() {
 
             {
             /* TODO: render BookPreview components for each search result here based on bookSearchResults */} 
-            { bookSearchResults.map((book) => (
+            { bookSearchResults.map ( book => (
               // let info = book.volumeInfo
                 <BookPreview 
                   title = {book.volumeInfo.title} 
