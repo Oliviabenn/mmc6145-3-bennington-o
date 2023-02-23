@@ -19,14 +19,18 @@ export default function Search() {
   // fetch has not finished
   // the query is unchanged
 
-  async function getBooks(e) {
+  async function getInfo(e){
     e.preventDefault()
+    if(fetching) return
+    
     setFetching(true)
+    setPreviousQuery(query)
     const result = await fetch(`https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=${query}`)
     const data = await result.json()
     setBookSearchResults(data.items)
     setFetching(false)
   }
+
   const inputRef = useRef()
   const inputDivRef = useRef()
 
@@ -36,7 +40,7 @@ export default function Search() {
 
       {/* TODO: add an onSubmit handler */}
 
-      <form onSubmit = {getBooks} className={styles.form}>
+      <form onSubmit = {getInfo} className={styles.form}>
         <label htmlFor="book-search">Search by author, title, and/or keywords:</label>
         <div ref={inputDivRef}>
 
@@ -48,7 +52,7 @@ export default function Search() {
             name="book-search"
             id="book-search"
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={e => { setPreviousQuery(query); setQuery(e.target.value)}}
             />
           <button type="submit">Submit</button>
         </div>
@@ -62,7 +66,14 @@ export default function Search() {
         : bookSearchResults?.length
         ? <div className={styles.bookList}>
 
-            {/* TODO: render BookPreview components for each search result here based on bookSearchResults */}
+            {/* TODO: render BookPreview components for each search result here based on bookSearchResults */} {
+            bookSearchResults.map((book) => (
+                <BookPreview 
+                  title = {book.volumeInfo.title} 
+                  authors = {book.volumeInfo.authors} 
+                  previewLink = {book.volumeInfo.previewLink} 
+                  thumbnail = {book.volumeInfo.imageLinks?.thumbnail}/>
+              ))}
 
           </div>
         : <NoResults
