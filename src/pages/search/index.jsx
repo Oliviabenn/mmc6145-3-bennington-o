@@ -22,7 +22,7 @@ export default function Search() {
   async function getInfo(e){
     e.preventDefault()
     if(fetching) return
-    
+    if(query == "") return
     setFetching(true)
     setPreviousQuery(query)
     const result = await fetch(`https://www.googleapis.com/books/v1/volumes?langRestrict=en&maxResults=16&q=${query}`)
