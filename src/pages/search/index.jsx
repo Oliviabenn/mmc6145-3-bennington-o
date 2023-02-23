@@ -36,7 +36,7 @@ export default function Search() {
 
       {/* TODO: add an onSubmit handler */}
 
-      <form className={styles.form}>
+      <form onSubmit = {getBooks} className={styles.form}>
         <label htmlFor="book-search">Search by author, title, and/or keywords:</label>
         <div ref={inputDivRef}>
 
