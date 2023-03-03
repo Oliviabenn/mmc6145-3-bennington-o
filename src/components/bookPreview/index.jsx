@@ -2,7 +2,7 @@ import styles from './style.module.css'
 
 export default function BookPreview({
   title,
-  authors,
+  author,
   thumbnail,
   previewLink
 }) {
@@ -13,7 +13,7 @@ export default function BookPreview({
         alt={title} />
       <div>
         <p><strong>{title}</strong></p>
-        {authors && <p>By: {authors.join(", ").replace(/, ([^,]*)$/, ', and $1')}</p>}
+        {author && <p>By: {author.join(", ").replace(/, ([^,]*)$/, ', and $1')}</p>}
       </div>
     </a>
   )

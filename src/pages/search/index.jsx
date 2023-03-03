@@ -4,11 +4,11 @@ import styles from './style.module.css'
 
 export default function Search() {
   // stores search results
-  const [bookSearchResults, setBookSearchResults] = useState()
+  const [bookSearchResults, setBookSearchResults] = useState([])
   // stores value of input field
   const [query, setQuery] = useState("")
   // compare to query to prevent repeat API calls
-  const [previousQuery, setPreviousQuery] = useState()
+  const [previousQuery, setPreviousQuery] = useState("")
   // used to prevent rage clicks on form submits
   const [fetching, setFetching] = useState(false)
 
@@ -29,6 +29,7 @@ export default function Search() {
     const data = await result.json()
     setBookSearchResults(data.items)
     setFetching(false)
+    console.log(data.items)
   }
 
   const inputRef = useRef()
@@ -57,35 +58,37 @@ export default function Search() {
           <button type="submit">Submit</button>
         </div>
       </form>
-      {
-        // if loading, show the loading component
-        // else if there are search results, render those
-        // else show the NoResults component
+      
+          {/* if loading, show the loading component
+         else if there are search results, render those
+         else show the NoResults component  */}
 
-        fetching
+       { fetching
         ? <Loading />
-        : bookSearchResults?.length
+        : bookSearchResults?.length > 0
         ? <div className={styles.bookList}>
 
             {
-            /* TODO: render BookPreview components for each search result here based on bookSearchResults */} 
-            { bookSearchResults.map ( book => (
-              // let info = book.volumeInfo
-                <BookPreview 
-                  title = {book.volumeInfo.title} 
-                  authors = {book.volumeInfo.authors} 
-                  previewLink = {book.volumeInfo.previewLink} 
-                  thumbnail = {book.volumeInfo.imageLinks.thumbnail}/>
-              ))}
+            /* TODO: render BookPreview components for each search result here based on bookSearchResults */}
+            {bookSearchResults.map((item, index) => {
+              const {authors, title, previewLink, imageLinks} = item.volumeInfo;
+              return (<BookPreview 
+                key={index}
+                title={title} 
+                author={authors} 
+                previewLink={previewLink} 
+                thumbnail={imageLinks.thumbnail}/>)
+          })}
           </div>
         
         : <NoResults
           {...{inputRef, inputDivRef, previousQuery}}
           clearSearch={() => setQuery("")}/>
-      }
+        }
+
     </main>
   )
-}
+
 
 function Loading() {
   return <span className={styles.loading}>Loading...⌛</span>
@@ -112,5 +115,4 @@ function NoResults({ inputDivRef, inputRef, previousQuery, clearSearch }) {
         }
       </button>
     </div>
-  )
-}
+  )}}
